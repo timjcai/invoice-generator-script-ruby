@@ -33,7 +33,7 @@ def create_invoice(number, date, po_number, total, jobnumber)
     end
 
     # header
-    docx.h1 "Tax Invoice ##{number}" do
+    docx.h1 "TAX INVOICE ##{number}" do
       align :right
       color '333333'
       size  40
@@ -73,7 +73,7 @@ def create_invoice(number, date, po_number, total, jobnumber)
     end
     c3 = Caracal::Core::Models::TableCellModel.new margins: { top: 0, bottom: 100, left: 0, right: 200 } do
       table table_1(date, po_number, total), border_size: 4 do
-        cell_style rows[-1], bold: true, background: '333333'
+        cell_style rows[-1], bold: true, background: 'F3F3F3'
         cell_style cols[0],  align: :right, bold: true
         cell_style cells,    size: 20, margins: { top: 100, bottom: 0, left: 100, right: 100 }
       end
