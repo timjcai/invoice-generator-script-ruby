@@ -1,13 +1,24 @@
 require 'Caracal'
 require 'date'
+require 'csv'
 
 cur_date = Date.today
 
-def table_1(date, po_number, total)
-  [['Work Date:', date],['Due Date:', date], ['PO Number:', po_number], ['Balance Due', total]]
+def entries
+  entries = []
+  filepath = "invoice-generator/inputs.csv"
+  CSV.foreach(filepath) do |row|
+    entries.push(row)
+  end
+  entries
 end
 
-def create_invoice(number, date, po_number, total, jobnumber)
+def table_1(date, po_number, total)
+  due_date = date + 14
+  [['Work Date:', date], ['Due Date:', due_date], ['PO Number:', po_number], ['Balance Due', total]]
+end
+
+def create_invoice(number, date, po_number, total, jobnumber, entries)
   Caracal::Document.save 'example2.docx' do |docx|
     #styling
     docx.style do
@@ -87,13 +98,18 @@ def create_invoice(number, date, po_number, total, jobnumber)
     docx.p
 
     # invoice details
-    docx.table [['Header 1','Header 2'],['Cell 1', 'Cell 2']], border_size: 4 do
+    docx.table entries, border_size: 4 do
       border_top do
         color   '000000'
         line    :double
         size    8
         spacing 2
       end
+      cell_style rows[0], background: '333333', color: 'FFFFFF'
+      cell_style cols[0], width: 6000, bold: true, align: :left
+      cell_style cols[1], align: :center
+      cell_style cols[2], align: :center
+      cell_style cols[3], align: :center
     end
 
     docx.p
@@ -103,4 +119,4 @@ def create_invoice(number, date, po_number, total, jobnumber)
   end
 end
 
-create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234')
+create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234', entries)
