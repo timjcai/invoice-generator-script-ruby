@@ -2,6 +2,7 @@ require 'Caracal'
 require 'date'
 require 'csv'
 require 'json'
+require 'libreconv'
 
 cur_date = Date.today
 filepath = "inputs.json"
@@ -9,6 +10,8 @@ filepath = "inputs.json"
 serialized_invoices = File.read(filepath)
 invoices = JSON.parse(serialized_invoices)
 allinvoices = invoices['invoices']
+
+p 'generating invoices....'
 
 # def entries
 #   entries = []
@@ -127,9 +130,13 @@ def create_invoice(number, date, po_number, total, jobnumber, jobdescription, qu
     docx.p  'Notes:'
     docx.p  "Job Number: #{jobnumber}"
   end
+
+  Libreconv.convert("Invoice##{number}-P.O.##{po_number}.docx", "Invoice##{number}-P.O.##{po_number}.pdf")
 end
 
 allinvoices.each do |invoice|
   create_invoice(invoice['invoice_number'],cur_date, invoice['po_number'], invoice['totalprice'], invoice['job_number'], invoice['job_description'], invoice['quantity'], invoice['price'])
 end
 # create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234', entries)
+
+p '🎉🎉 PDF invoices successfully generated! 🎉🎉'
