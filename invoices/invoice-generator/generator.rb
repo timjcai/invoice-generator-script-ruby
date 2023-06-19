@@ -1,25 +1,35 @@
 require 'Caracal'
 require 'date'
 require 'csv'
+require 'json'
 
 cur_date = Date.today
+filepath = "inputs.json"
 
-def entries
-  entries = []
-  filepath = "invoice-generator/inputs.csv"
-  CSV.foreach(filepath) do |row|
-    entries.push(row)
-  end
-  entries
-end
+serialized_invoices = File.read(filepath)
+invoices = JSON.parse(serialized_invoices)
+allinvoices = invoices['invoices']
+
+# def entries
+#   entries = []
+#   filepath = "invoice-generator/inputs.csv"
+#   CSV.foreach(filepath) do |row|
+#     entries.push(row)
+#   end
+#   entries
+# end
 
 def table_1(date, po_number, total)
   due_date = date + 14
   [['Work Date:', date], ['Due Date:', due_date], ['PO Number:', po_number], ['Balance Due', total]]
 end
 
-def create_invoice(number, date, po_number, total, jobnumber, entries)
-  Caracal::Document.save 'example2.docx' do |docx|
+def table_2(jobdescription, quantity, amount)
+  result = [['Item', 'Quantity', 'Rate', 'Amount'], [jobdescription, quantity, "$#{amount}AUD", "$#{quantity * amount}AUD"]]
+end
+
+def create_invoice(number, date, po_number, total, jobnumber, jobdescription, quantity, amount)
+  Caracal::Document.save "Invoice##{number}-P.O.##{po_number}.docx" do |docx|
     #styling
     docx.style do
       id      'Heading1'
@@ -98,7 +108,7 @@ def create_invoice(number, date, po_number, total, jobnumber, entries)
     docx.p
 
     # invoice details
-    docx.table entries, border_size: 4 do
+    docx.table table_2(jobdescription, quantity, amount), border_size: 4 do
       border_top do
         color   '000000'
         line    :double
@@ -119,4 +129,7 @@ def create_invoice(number, date, po_number, total, jobnumber, entries)
   end
 end
 
-create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234', entries)
+allinvoices.each do |invoice|
+  create_invoice(invoice['invoice_number'],cur_date, invoice['po_number'], invoice['totalprice'], invoice['job_number'], invoice['job_description'], invoice['quantity'], invoice['price'])
+end
+# create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234', entries)

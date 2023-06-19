@@ -5,7 +5,8 @@
       "job_number": 40991,
       "job_description": "Additional Clean - Unit 611 #21 Battalion Road - Alira Precinct",
       "quantity": 1,
-      "price": "$54.00AUD"
+      "price": 54.00,
+      "totalprice": 54.00
     },
     {
       "invoice_number": 13,
@@ -13,6 +14,7 @@
       "job_number": 41044,
       "job_description": "Additional Clean - Unit 612 #23 Battalion Road - Alira Precinct",
       "quantity": 1,
-      "price": "$54.00AUD"
+      "price": 54.00,
+      "totalprice": 54.00
     }]
 }
