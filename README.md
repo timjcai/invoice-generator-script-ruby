@@ -27,8 +27,11 @@ Currently it was taking me 20 minutes+ to create and send off multiple purchase 
 
 ---
 # How to use
-## add in raw data via inputs.json
+
+## 1. add in raw data via inputs.json
 ![alt text](https://res.cloudinary.com/dhxonutdu/image/upload/v1687223213/small-projects/inputs-json-ruby-invoice-script_eijjvz.png)
+
+
 ```
 "invoice_number": (1)
 "po_number": (2)
@@ -38,10 +41,11 @@ Currently it was taking me 20 minutes+ to create and send off multiple purchase 
 "price": (6)
 "totalprice": (7) 
 ```
-Result
+## 2. Result
 ![alt text](https://res.cloudinary.com/dhxonutdu/image/upload/v1687223212/small-projects/output-ruby-invoice-script_hshoal.png)
 
-## run script
+
+## 3. run script
 ```
 `cd invoices`
 `ruby generator.rb`
