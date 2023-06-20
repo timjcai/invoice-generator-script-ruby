@@ -28,7 +28,7 @@ def table_1(date, po_number, total)
 end
 
 def table_2(jobdescription, quantity, amount)
-  result = [['Item', 'Quantity', 'Rate', 'Amount'], [jobdescription, quantity, "$#{amount}AUD", "$#{quantity * amount}AUD"]]
+  result = [['Item', 'Quantity', 'Rate', 'Amount'], [jobdescription, quantity, "$#{amount}0", "$#{quantity * amount}0"]]
 end
 
 def create_invoice(number, date, po_number, total, jobnumber, jobdescription, quantity, amount)
@@ -137,6 +137,5 @@ end
 allinvoices.each do |invoice|
   create_invoice(invoice['invoice_number'],cur_date, invoice['po_number'], invoice['totalprice'], invoice['job_number'], invoice['job_description'], invoice['quantity'], invoice['price'])
 end
-# create_invoice(6, cur_date, '123470', '$54.00 AUD', '123491234', entries)
 
 p '🎉🎉 PDF invoices successfully generated! 🎉🎉'
