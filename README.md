@@ -5,10 +5,10 @@ Saving me 20 minutes every time I would need to generate purchase orders
 # Installation
 ## Requirements
 Install Ruby
-: [ Install Ruby ] (https://www.ruby-lang.org/en/documentation/installation/)
+> [ Install Ruby ] (https://www.ruby-lang.org/en/documentation/installation/)
 
 or check Ruby version in your terminal
-: > $ ruby -v
+> $ ruby -v
 
 ## Installation
 
