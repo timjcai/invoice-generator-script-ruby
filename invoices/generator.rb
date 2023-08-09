@@ -1,4 +1,4 @@
-require 'Caracal'
+require 'caracal'
 require 'date'
 require 'csv'
 require 'json'
@@ -24,11 +24,11 @@ p 'generating invoices....'
 
 def table_1(date, po_number, total)
   due_date = date + 14
-  [['Work Date:', date], ['Due Date:', due_date], ['PO Number:', po_number], ['Balance Due', total]]
+  [['Work Date:', date], ['Due Date:', due_date], ['PO Number:', po_number], ['Balance Due', "$#{total}0"]]
 end
 
-def table_2(jobdescription, quantity, amount)
-  result = [['Item', 'Quantity', 'Rate', 'Amount'], [jobdescription, quantity, "$#{amount}0", "$#{quantity * amount}0"]]
+def table_2(jobdescription, quantity, amount, total)
+  result = [['Item', 'Quantity', 'Rate', 'Amount'], [jobdescription, quantity, "$#{amount}0", "$#{quantity * amount}0"], ['Total', '', '' , "$#{total}0"]]
 end
 
 def create_invoice(number, date, po_number, total, jobnumber, jobdescription, quantity, amount)
@@ -111,7 +111,7 @@ def create_invoice(number, date, po_number, total, jobnumber, jobdescription, qu
     docx.p
 
     # invoice details
-    docx.table table_2(jobdescription, quantity, amount), border_size: 4 do
+    docx.table table_2(jobdescription, quantity, amount, total), border_size: 4 do
       border_top do
         color   '000000'
         line    :double
@@ -135,7 +135,7 @@ def create_invoice(number, date, po_number, total, jobnumber, jobdescription, qu
 end
 
 allinvoices.each do |invoice|
-  create_invoice(invoice['invoice_number'],cur_date, invoice['po_number'], invoice['totalprice'], invoice['job_number'], invoice['job_description'], invoice['quantity'], invoice['price'])
+  create_invoice(invoice['invoice_number'],cur_date, invoice['po_number'], invoice['totalprice'], invoice['po_number'].split('-')[0], invoice['job_description'], invoice['quantity'], invoice['price'])
 end
 
 p '🎉🎉 PDF invoices successfully generated! 🎉🎉'
